@@ -1,8 +1,8 @@
-site_name: Template de Entrega
-site_author: Sandmann, H.
-site_url: https://hsandmann.github.io/documentation.template
-repo_url: https://github.com/hsandmann/documentation.template
-repo_name: github/documentation.template
+site_name: ML-Pimenta
+site_author: Luiz Felipe Pimenta Berrettini
+site_url: https://pimentabrrt.github.io/ml-pimenta
+repo_url: https://github.com/PimentaBrrt/ml-pimenta
+repo_name: pimentabrrt/ml-pimenta
 
 theme:
   name: material
@@ -63,6 +63,7 @@ theme:
       bug: fontawesome/solid/robot
       example: fontawesome/solid/flask
       quote: fontawesome/solid/quote-left
+  logo: assets/images/logo.svg
 
 markdown_extensions:
   - admonition
@@ -134,9 +135,11 @@ extra_javascript:
 nav:
   - Home: index.md
   - This documentation: ./thisdocumentation/main.md
+  - Projetos:
+    - Projeto 1 - Decision Tree: ./decision-tree/main.md
   - Roteiros:
     - Roteiro 1: ./roteiro1/main.md
     - Roteiro 2: ./roteiro2/main.md
     - Roteiro 3: ./roteiro3/main.md
     - Roteiro 4: ./roteiro4/main.md
-  - Projeto: ./projeto/main.md
+  - Documentação: ./projeto/main.md

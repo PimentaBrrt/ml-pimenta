@@ -24,7 +24,7 @@
 
 ## Entregas
 
-- [x] Roteiro 1 - Data 23/02/2025
+- [ ] Decision Tree - Data 29/08/2025
 - [ ] Roteiro 2
 - [ ] Roteiro 3
 - [ ] Roteiro 4
