@@ -55,7 +55,7 @@ O dataset escolhido é composto por **1946 linhas** e **30 colunas**, contendo u
 
 No dataset, temos uma coluna que possui um índice que aponta algo não identificado: o **plod**. Para investigar seu significado, são necessárias algumas análises:
 
-- **Inspeção dos valores**: Primeiro, foram realizadas algumas linhas de código para verificar os valores da coluna;
+- **Inspeção dos valores:** Primeiro, foram realizadas algumas linhas de código para verificar os valores da coluna;
 
 === "Saída"
 
@@ -109,7 +109,7 @@ Portanto, os padrões do gráfico indicam, novamente, que **plod** funciona como
 
 #### Exploração aprofundada da coluna **popularity**
 
-- **Estatísticas descritivas**: Primeiramente, vamos calcular alguns valores essenciais dessa coluna;
+- **Estatísticas descritivas:** Primeiramente, vamos calcular alguns valores essenciais dessa coluna;
 
 === "Saída"
 
@@ -123,4 +123,25 @@ Portanto, os padrões do gráfico indicam, novamente, que **plod** funciona como
     --8<-- "docs\decision-tree\pop-stats.py"
     ```
 
+Na saída, observa-se que **popularity** é um índice que indica a popularidade do personagem, variando entre 0 e 1, com o valor 0 para irrelevante e 1 para popular.
+
+- **Gráfico de dispersão de *popularity*:** O gráfico relaciona o índice **popularity** com a soma das 5 variáveis **book**, que indicam a presença de um personagem em cada livro em binário. Os livros considerados nessas variáveis são apenas a narrativa principal da história, sem spin-offs e personagens que são apenas citados e referenciados.
+
+=== "Gráfico"
+
+    ```python exec="on" html="1"
+    --8<-- "docs\decision-tree\pop-scatter.py"
+    ```
+
+=== "Código"
+
+    ```python exec="0"
+    --8<-- "docs\decision-tree\pop-scatter.py"
+    ```
+
+A análise do gráfico indica que, de 1 até 5 aparições, o número de personagens populares **aumenta** de forma diretamente proporcional, com alguns out-liers.
+
+Contudo, podemos observar que diversos personagens que não apareceram na *série principal de livros* são extremamente populares. Isso acontece pois há personagens de spin-offs muito amados pela comunidade, além de outros personagens que são apenas citados ao longo da história, sem aparecer diretamente, e também adquirem alta popularidade.
+
 ### Etapa 2 - Pré-processamento
+
