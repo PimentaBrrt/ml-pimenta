@@ -6,7 +6,7 @@ Os dados usados podem ser baixados [**aqui**](https://www.kaggle.com/datasets/da
 ## Objetivo
 
 O dataset apresenta diversos dados relacionados à cada um dos personagens da série de livros [**A Song of Ice and Fire**](https://en.wikipedia.org/wiki/A_Song_of_Ice_and_Fire){:target='_blank'}, escrita por [**George R. R. Martin**](https://en.wikipedia.org/wiki/George_R._R._Martin){:target='_blank'}, inspiração para a famosa série [**Game of Thrones**](https://en.wikipedia.org/wiki/Game_of_Thrones){:target='_blank'}.
-O objetivo dessa análise é o modelo fazer a predição da importância do personagem para a série no sentido de trama. Um índice será criado a partir das variáveis presentes no dataset, variando entre 0 para completamente irrelevante e 1 para muito relevante.
+O objetivo dessa análise é o modelo fazer a predição da importância do personagem para a série no sentido de trama. Uma variável categórica será criada a partir das variáveis presentes no dataset, classificando a relevância do personagem. Essa variável será avaliada pelo modelo de Machine Learning.
 
 ## Workflow
 
