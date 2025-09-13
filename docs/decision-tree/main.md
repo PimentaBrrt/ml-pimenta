@@ -20,36 +20,36 @@ O dataset escolhido é composto por **1946 linhas** e **30 colunas**, contendo u
 
 | Coluna | Tipo | Descrição |
 |--------|------|-----------|
-| S.No | Inteiro | Identificador único do personagem |
-| plod | Float | Valor não especificado |
-| name | String | Nome do personagem |
-| title | String | Alcunha atribuída ao personagem dentro do mundo |
-| gender | Binário | Sexo do personagem: 0 = feminino, 1 = masculino |
-| culture | String | Grupo social ao qual o personagem pertence |
-| dateOfBirth | Inteiro | Data de nascimento. Valores positivos = depois do ano 0, negativos = antes do ano 0 |
-| DateoFdeath | Inteiro | Data de morte. Valores positivos = depois do ano 0, negativos = antes do ano 0 |
-| mother | String | Nome da mãe do personagem |
-| father | String | Nome do pai do personagem |
-| heir | String | Nome do herdeiro do personagem |
-| house | String | Nome da casa à qual o personagem pertence |
-| spouse | String | Nome do cônjuge do personagem |
-| book1 | Binário | Indica se o personagem apareceu no primeiro livro |
-| book2 | Binário | Indica se o personagem apareceu no segundo livro |
-| book3 | Binário | Indica se o personagem apareceu no terceiro livro |
-| book4 | Binário | Indica se o personagem apareceu no quarto livro |
-| book5 | Binário | Indica se o personagem apareceu no quinto livro |
-| isAliveMother | Binário | Indica se a mãe do personagem está viva |
-| isAliveFather | Binário | Indica se o pai do personagem está vivo |
-| isAliveHeir | Binário | Indica se o herdeiro do personagem está vivo |
-| isAliveSpouse | Binário | Indica se o cônjuge do personagem está vivo |
-| isMarried | Binário | Indica se o personagem é casado |
-| isNoble | Binário | Indica se o personagem é nobre |
-| age | Inteiro | Idade do personagem (referência: ano 305 D.C.) |
-| numDeadRelations | Inteiro | Número de personagens mortos com os quais o personagem se relaciona |
-| boolDeadRelations | Binário | Indica se há personagens mortos relacionados ao personagem |
-| isPopular | Binário | Indica se o personagem é considerado popular |
-| popularity | Float | Índice entre 0 e 1 que indica o quão popular é o personagem |
-| isAlive | Binário | Indica se o personagem está vivo |
+| `S.No` | Inteiro | Identificador único do personagem |
+| `plod` | Float | Valor não especificado |
+| `name` | String | Nome do personagem |
+| `title` | String | Alcunha atribuída ao personagem dentro do mundo |
+| `gender` | Binário | Sexo do personagem: 0 = feminino, 1 = masculino |
+| `culture` | String | Grupo social ao qual o personagem pertence |
+| `dateOfBirth` | Inteiro | Data de nascimento. Valores positivos = depois do ano 0, negativos = antes do ano 0 |
+| `DateoFdeath` | Inteiro | Data de morte. Valores positivos = depois do ano 0, negativos = antes do ano 0 |
+| `mother` | String | Nome da mãe do personagem |
+| `father` | String | Nome do pai do personagem |
+| `heir` | String | Nome do herdeiro do personagem |
+| `house` | String | Nome da casa à qual o personagem pertence |
+| `spouse` | String | Nome do cônjuge do personagem |
+| `book1` | Binário | Indica se o personagem apareceu no primeiro livro |
+| `book2` | Binário | Indica se o personagem apareceu no segundo livro |
+| `book3` | Binário | Indica se o personagem apareceu no terceiro livro |
+| `book4` | Binário | Indica se o personagem apareceu no quarto livro |
+| `book5` | Binário | Indica se o personagem apareceu no quinto livro |
+| `isAliveMother` | Binário | Indica se a mãe do personagem está viva |
+| `isAliveFather` | Binário | Indica se o pai do personagem está vivo |
+| `isAliveHeir` | Binário | Indica se o herdeiro do personagem está vivo |
+| `isAliveSpouse` | Binário | Indica se o cônjuge do personagem está vivo |
+| `isMarried` | Binário | Indica se o personagem é casado |
+| `isNoble` | Binário | Indica se o personagem é nobre |
+| `age` | Inteiro | Idade do personagem (referência: ano 305 D.C.) |
+| `numDeadRelations` | Inteiro | Número de personagens mortos com os quais o personagem se relaciona |
+| `boolDeadRelations` | Binário | Indica se há personagens mortos relacionados ao personagem |
+| `isPopular` | Binário | Indica se o personagem é considerado popular |
+| `popularity` | Float | Índice entre 0 e 1 que indica o quão popular é o personagem |
+| `isAlive` | Binário | Indica se o personagem está vivo |
 
 #### Estudo da coluna **`plod`**
 
@@ -60,13 +60,13 @@ No dataset, temos uma coluna que possui um índice que aponta algo não identifi
 === "Saída"
 
     ```python exec="1"
-    --8<-- "docs\decision-tree\plod-teste1.py"
+    --8<-- "docs/decision-tree/plod-teste1.py"
     ```
 
 === "Código"
 
     ```python exec="0"
-    --8<-- "docs\decision-tree\plod-teste1.py"
+    --8<-- "docs/decision-tree/plod-teste1.py"
     ```
 
 A análise da saída obtida nos permite observar que os valores estão sempre no intervalo [0,1], sugerindo que representam uma probabilidade ou índice normalizado.
@@ -76,13 +76,13 @@ A análise da saída obtida nos permite observar que os valores estão sempre no
 === "Saída"
 
     ```python exec="1"
-    --8<-- "docs\decision-tree\plod-teste2.py"
+    --8<-- "docs/decision-tree/plod-teste2.py"
     ```
 
 === "Código"
 
     ```python exec="0"
-    --8<-- "docs\decision-tree\plod-teste2.py"
+    --8<-- "docs/decision-tree/plod-teste2.py"
     ```
 
 É possível observar que a correlação mais forte entre **plod** e qualquer outra coluna no dataset é com a coluna **isAlive**. Esse dado nos permite criar uma **hipótese** de que **plod** é a *estimativa da probabilidade de morte do personagem*.
@@ -92,13 +92,13 @@ A análise da saída obtida nos permite observar que os valores estão sempre no
 === "Gráfico"
 
     ```python exec="on" html="1"
-    --8<-- "docs\decision-tree\plod-teste3.py"
+    --8<-- "docs/decision-tree/plod-teste3.py"
     ```
 
 === "Código"
 
     ```python exec="0"
-    --8<-- "docs\decision-tree\plod-teste3.py"
+    --8<-- "docs/decision-tree/plod-teste3.py"
     ```
 
 No gráfico, observa-se que personagens vivos (isAlive = 1) tendem a possuir baixos valores de plod, enquanto personagens mortos (isAlive = 0) geralmente têm valores altos. Além disso, é possível observar diversos outliers dentre os personagens vivos, que são provavelmente personagens que aparecem pouco e/ou possuem informações incompletas. Essa ideia é fortalecida pelo fato de que a variável **popularity** (popularidade) também possui correlação moderada com **plod**.
@@ -114,13 +114,13 @@ Portanto, os padrões do gráfico indicam, novamente, que **plod** funciona como
 === "Saída"
 
     ```python exec="1"
-    --8<-- "docs\decision-tree\pop-stats.py"
+    --8<-- "docs/decision-tree/pop-stats.py"
     ```
 
 === "Código"
 
     ```python exec="0"
-    --8<-- "docs\decision-tree\pop-stats.py"
+    --8<-- "docs/decision-tree/pop-stats.py"
     ```
 
 Na saída, observa-se que **popularity** é um índice que indica a popularidade do personagem, variando entre 0 e 1, com o valor 0 para irrelevante e 1 para popular.
@@ -130,13 +130,13 @@ Na saída, observa-se que **popularity** é um índice que indica a popularidade
 === "Gráfico"
 
     ```python exec="on" html="1"
-    --8<-- "docs\decision-tree\pop-scatter.py"
+    --8<-- "docs/decision-tree/pop-scatter.py"
     ```
 
 === "Código"
 
     ```python exec="0"
-    --8<-- "docs\decision-tree\pop-scatter.py"
+    --8<-- "docs/decision-tree/pop-scatter.py"
     ```
 
 A análise do gráfico indica que, de 1 até 5 aparições, o número de personagens populares **aumenta** de forma diretamente proporcional, com alguns out-liers.
@@ -277,13 +277,13 @@ Com o **relevance_score** definido, criaremos a nova coluna, **relevance_categor
 === "Saída"
 
     ```python exec="1"
-    --8<-- "docs\decision-tree\preprocessing.py"
+    --8<-- "docs/decision-tree/preprocessing.py"
     ```
 
 === "Código"
 
     ```python exec="0"
-    --8<-- "docs\decision-tree\preprocessing.py"
+    --8<-- "docs/decision-tree/preprocessing.py"
     ```
 
 ### Etapa 3 - Divisão de dados
@@ -305,13 +305,13 @@ Para realizar a divisão, utilizaremos a função `train_test_split()` do `sciki
 === "Saída"
 
     ```python exec="1"
-    --8<-- "docs\decision-tree\division.py"
+    --8<-- "docs/decision-tree/division.py"
     ```
 
 === "Código"
 
     ```python exec="0"
-    --8<-- "docs\decision-tree\division.py"
+    --8<-- "docs/decision-tree/division.py"
     ```
 
 Os dados, agora, estão devidamente divididos. Esta divisão adequada é de extrema importância, pois ajuda a evitar *overfitting* e garante que o modelo possa generalizar bem para novos personagens não vistos durante o treinamento.
@@ -323,13 +323,13 @@ Agora, será realizado o treinamento do modelo. O objetivo dessa etapa é ensina
 === "Gráfico"
 
     ```python exec="on" html="1"
-    --8<-- "docs\decision-tree\training.py"
+    --8<-- "docs/decision-tree/training.py"
     ```
 
 === "Código"
 
     ```python exec="0"
-    --8<-- "docs\decision-tree\training.py"
+    --8<-- "docs/decision-tree/training.py"
     ```
 
 ### Etapa 5 - Avaliação do modelo

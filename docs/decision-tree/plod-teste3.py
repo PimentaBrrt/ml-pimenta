@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from io import StringIO
 
-df = pd.read_csv("docs\decision-tree\dados.csv", sep=",", encoding="UTF-8")
+df = pd.read_csv("docs/decision-tree/dados.csv", sep=",", encoding="UTF-8")
 
 plod_alive = df[df["isAlive"] == 1]["plod"]
 plod_dead = df[df["isAlive"] == 0]["plod"]

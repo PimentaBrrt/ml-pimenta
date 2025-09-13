@@ -111,7 +111,7 @@ plugins:
       enable_creation_date: true
   - git-authors
   - git-committers:
-      repository: hsandmann/hsandmann.github.com
+      repository: pimentabrrt/pimentabrrt.github.com
       branch: main
   - search
   - badges
@@ -136,3 +136,4 @@ nav:
   - Home: index.md
   - Projetos:
     - Projeto 1 - Decision Tree: ./decision-tree/main.md
+    - Projeto 2 - KNN: ./knn/main.md

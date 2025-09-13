@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("docs\decision-tree\dados.csv", sep=",", encoding="UTF-8")
+df = pd.read_csv("docs/decision-tree/dados.csv", sep=",", encoding="UTF-8")
 
 df_numerico = df.select_dtypes(include=["number"])
 

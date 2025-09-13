@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("docs\decision-tree\dados.csv", sep=",", encoding="UTF-8")
+df = pd.read_csv("docs/decision-tree/dados.csv", sep=",", encoding="UTF-8")
 
 # 1° Passo: Criando a coluna "book_freq", já normalizando-a
 
