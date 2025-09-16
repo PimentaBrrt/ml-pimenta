@@ -279,15 +279,46 @@ Através das análises, foi possível alcançar uma compreensão mais aprofundad
 
 ### Etapa 2 - Pré-processamento
 
-TODO list do pré-processamento:
+#### 1° Passo: Identificação e tratamento de valores nulos
 
-- Identificar valores NA
+O primeiro passo para o pré-processamento é identificar e tratar valores nulos na base.
 
-- Tratamento dos valores ausentes
+``` python exec="0"
+print(df.isna().sum())
+```
 
-- Codificação de variáveis categóricas
+Executando a linha de código acima para o dataframe contendo os dados da base, foi possível identificar que não há valores nulos na base.
 
-- Normalização/Padronização das features numéricas 
+#### 2° Passo: Remoção de colunas desimportantes
+
+Em seguida, colunas que não são importantes para a predição serão removidas do dataframe. Essas colunas são `Booking_ID` e `date of reservation`. A forma que essa exclusão foi feita está representada abaixo:
+
+``` python
+df = df.drop(columns=["Booking_ID", "date of reservation"])
+```
+
+#### 3° Passo: Codificação de variáveis categóricas
+
+O terceiro passo se consiste na codificação das variáveis categóricas. Essas são: `type of meal`, `room type` e `market segment type`.
+Considerando a forma como a técnica do KNN funciona, calculando a distância euclidiana entre pontos para predizer, a técnica de label encoding seria ruim, pois os valores numéricos arbitrários poderiam criar distâncias falsas entre as categorias. Por isso, utilizaremos a técnica de One-Hot Encoding para codificar essas variáveis. 
+
+``` python exec="0"
+from sklearn.preprocessing import OneHotEncoder
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+encoder = OneHotEncoder(drop='first', sparse_output=False)
+encoder.fit(X_train[categorical_cols])
+
+X_train_encoded = encoder.transform(X_train[categorical_cols])
+X_test_encoded = encoder.transform(X_test[categorical_cols])  
+```
+
+Realizar One-Hot Encoding antes da divisão dos dados pode gerar [**data leakage**](https://www.kaggle.com/code/alexisbcook/data-leakage/tutorial). Por isso, o código apresentado acima já possui as variáveis *x_train* e *x_test*.
+
+#### 4° Passo: Normalização/Padronização das features numéricas 
+
+
 
 ### Etapa 3 - Divisão de dados
 
