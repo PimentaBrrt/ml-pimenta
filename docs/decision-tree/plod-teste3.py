@@ -11,7 +11,7 @@ plt.rcParams["figure.figsize"] = (10, 5)
 fig, ax = plt.subplots(facecolor="white")
 ax.set_facecolor("white")
 
-ax.boxplot([plod_alive, plod_dead], labels=["Vivo", "Morto"],
+ax.boxplot([plod_alive, plod_dead], tick_labels=["Vivo", "Morto"],
            patch_artist=True,
            boxprops=dict(facecolor="lightblue", color="black"),
            medianprops=dict(color="red"))

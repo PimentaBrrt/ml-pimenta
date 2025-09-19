@@ -1,18 +1,12 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv("dados_processado.csv")
+df = pd.read_csv("docs/knn/booking.csv")
 
-features = [
-    "book_freq", "popularity", "survival_prob", "isNoble",
-    "has_title", "has_culture", "has_mother", "has_father", 
-    "has_heir", "has_house"
-]
+df = df.drop(columns=["Booking_ID", "date of reservation"])
 
-target = "relevance_category"
-
-X = df[features]
-y = df[target]
+X = df.drop("booking status", axis=1)
+y = df["booking status"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 

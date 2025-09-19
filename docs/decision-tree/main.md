@@ -320,7 +320,7 @@ Os dados, agora, estão devidamente divididos. Esta divisão adequada é de extr
 
 Agora, será realizado o treinamento do modelo. O objetivo dessa etapa é ensinar o algoritmo a reconhecer padrões nos dados que são fornecidos, e determinar a importância narrativa de cada personagem na *série principal* de livros de [**A Song of Ice and Fire**](https://en.wikipedia.org/wiki/A_Song_of_Ice_and_Fire){:target='_blank'}.
 
-=== "Gráfico"
+=== "Árvore"
 
     ```python exec="on" html="1"
     --8<-- "docs/decision-tree/training.py"

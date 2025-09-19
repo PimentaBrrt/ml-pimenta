@@ -277,7 +277,38 @@ Está seção será divida para cada tipo de variável, entre variáveis quantit
 
 Através das análises, foi possível alcançar uma compreensão mais aprofundada do funcionamento de cada uma das variáveis no dataset, além de haver insights valiosos nesses gráficos. Esses dados serão essenciais para a escolha das variáveis que serão utilizadas no modelo.
 
-### Etapa 2 - Pré-processamento
+### Etapa 2 - Pré-processamento e Divisão de Dados
+
+Neste projeto, após um estudo do pré-processamento e divisão de dados, foram considerados dois modelos distintos de pré-processamento. O primeiro modelo faz, primeiro, o pré-processamento, utilizando todo o dataset para treinar o modelo de predição. O segundo modelo cria o pré-processamento apenas com os dados de treinamento, evitando que o modelo tenha acesso indireto aos dados de teste, evitando [**data leakage**](https://www.kaggle.com/code/alexisbcook/data-leakage/tutorial){:target='_blank'}.
+
+O primeiro modelo utiliza os dados de teste para realizar a padronização e substituição de valores nulos no dataset inteiro, fazendo com que, indiretamente, o modelo tenha acesso aos dados de teste. Esse problema pode afetar a acurácia do modelo com enviesamento, fazendo com que sua eficácia real seja diferente da testada. O segundo modelo trata os dados de teste como dados que nunca foram acessados pelo modelo. O pré-processamento, depois de feito a partir dos dados de treino, será aplicado aos dados de teste, inserindo-os no mesmo domínio do modelo para que possam ser realizadas predições. A hipótese principal é de que a acurácia do segundo modelo será um pouco menor, mas o modelo terá menos viés.
+
+Abaixo, estão o diagramas de sequência representando cada modelo:
+
+#### Modelo 1 - Pré-processamento -> Divisão dos Dados
+
+``` mermaid
+flowchart TD
+    A[Exploração de Dados] --> B[Pré-processamento]
+    B --> C{Divisão dos Dados}
+    C -->|80% dos dados| D[Treino] --> F[Treinamento do modelo]
+    C -->|20% dos dados| E[Teste] --> G[Avaliação do modelo]
+    F --> G
+```
+
+#### Modelo 2 Divisão dos Dados -> Pré-processamento
+
+``` mermaid
+flowchart TD
+    A[Exploração de Dados] --> B{Divisão dos Dados}
+    B -->|Teste<br>20% dos dados| PTest[Pré-processamento]
+    B -->|Treino<br>80% dos dados| PTrain[Pré-processamento]
+    PTrain --> Train[Treinamento]
+    Train --> G
+    PTest --> G[Avaliação do modelo]
+```
+
+Nos dois modelos, o pré-processamento é o mesmo. O que muda é o conjunto de dados em que ele é aplicado, sendo aplicado em todo o dataset no modelo 1 e apenas no conjunto de treino no modelo 2.
 
 #### 1° Passo: Identificação e tratamento de valores nulos
 
@@ -300,10 +331,35 @@ df = df.drop(columns=["Booking_ID", "date of reservation"])
 #### 3° Passo: Codificação de variáveis categóricas
 
 O terceiro passo se consiste na codificação das variáveis categóricas. Essas são: `type of meal`, `room type` e `market segment type`.
-Considerando a forma como a técnica do KNN funciona, calculando a distância euclidiana entre pontos para predizer, a técnica de label encoding seria ruim, pois os valores numéricos arbitrários poderiam criar distâncias falsas entre as categorias. Por isso, utilizaremos a técnica de One-Hot Encoding para codificar essas variáveis. 
+Considerando a forma como a técnica do KNN funciona, calculando a distância euclidiana entre pontos para predizer, a técnica de label encoding seria ruim, pois os valores numéricos arbitrários poderiam criar distâncias falsas entre as categorias. Por isso, utilizaremos a técnica de One-Hot Encoding para codificar essas variáveis, utilizando o *OneHotEncoder()* do `scikit-learn`.
+
+*Modelo 1:*
 
 ``` python exec="0"
+
 from sklearn.preprocessing import OneHotEncoder
+
+encoder = OneHotEncoder()
+categorical_cols = ['type of meal', 'room type', 'market segment type']
+
+X = df.drop("booking status", axis=1)
+
+X_encoded = encoder.fit_transform(X[categorical_cols])
+encoded_df = pd.DataFrame(X_encoded.toarray(), columns=encoder.get_feature_names_out(categorical_cols), index=X.index)
+
+X = pd.concat([X.drop(columns=categorical_cols), encoded_df], axis=1)
+
+```
+
+*Modelo 2:*
+
+``` python exec="0"
+
+from sklearn.preprocessing import OneHotEncoder
+
+categorical_cols = ['type of meal', 'room type', 'market segment type']
+
+X = df.drop("booking status", axis=1)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -311,24 +367,120 @@ encoder = OneHotEncoder(drop='first', sparse_output=False)
 encoder.fit(X_train[categorical_cols])
 
 X_train_encoded = encoder.transform(X_train[categorical_cols])
-X_test_encoded = encoder.transform(X_test[categorical_cols])  
+X_test_encoded = encoder.transform(X_test[categorical_cols])
+
 ```
 
-Realizar One-Hot Encoding antes da divisão dos dados pode gerar [**data leakage**](https://www.kaggle.com/code/alexisbcook/data-leakage/tutorial). Por isso, o código apresentado acima já possui as variáveis *x_train* e *x_test*.
+#### 4° Passo: Padronização das features numéricas 
 
-#### 4° Passo: Normalização/Padronização das features numéricas 
+Por fim, é necessária a padronização das features numéricas na base. Ao invés da normalização, será utilizada a técnica de padronização devido aos outliers nas features numéricas, principalmente as variáveis `lead time` e `average price`, que desbalanceariam o cálculo de distâncias se apenas normalizadas.
+Para a padronização, utilizaremos o *StandardScaler()* do `scikit-learn`.
 
+*Modelo 1:*
 
+``` python exec="0"
 
-### Etapa 3 - Divisão de dados
+from sklearn.preprocessing import OneHotEncoder
 
+scaler = StandardScaler()
+numeric_cols = ['number of adults', 'number of children', 'number of weekend nights', 
+                'number of week nights', 'lead time', 'P-C', 'P-not-C', 
+                'average price', 'special requests']
 
+X = df.drop("booking status", axis=1)
 
-### Etapa 4 - Treinamento do Modelo
+for col in numeric_cols:
+    X[col] = scaler.fit_transform(X[[col]])
 
+```
 
+*Modelo 2:*
 
-### Etapa 5 - Avaliação do modelo
+``` python exec="0"
+
+from sklearn.preprocessing import StandardScaler
+
+numeric_cols = ['number of adults', 'number of children', 'number of weekend nights', 
+                'number of week nights', 'lead time', 'P-C', 'P-not-C', 
+                'average price', 'special requests']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+```
+
+#### Divisão dos dados
+
+Como explicado anteriormente, essa etapa será realizada em momentos distintos dependendo do modelo utilizado. No primeiro modelo, esta etapa vem depois de todo o pré-processamento. No segundo modelo, esta etapa vem antes do pré-processamento.
+
+- **Conjunto de Treino:** Utilizado para ensinar o modelo a reconhecer padrões
+
+- **Conjunto de Teste:** Utilizado para avaliar o desempenho do modelo com dados ainda não vistos
+
+Para realizar a divisão, foi utilizada a função *train_test_split()* do `scikit-learn`. Os parâmetros utilizados são:
+
+- **test_size=0.2:** Define que 20% dos dados serão utilizados para teste, enquanto o restante será usado para treino.
+
+- **random_state=42:** Parâmetro que controla o gerador de número aleatórios utilizado para sortear os dados antes de separá-los. Garante reprodutibilidade.
+
+- **stratify=y:** Esse atributo definido como *y* é essencial devido à natureza da coluna `booking status`. Com essa definição, será mantida a mesma proporção das categorias em ambos os conjuntos, reduzindo o viés.
+
+=== "Saída"
+
+    ```python exec="1"
+    --8<-- "docs/knn/division.py"
+    ```
+
+=== "Código"
+
+    ```python exec="0"
+    --8<-- "docs/knn/division.py"
+    ```
+
+Esta divisão adequada é de extrema importância, pois ajuda a evitar *overfitting*.
+
+### Etapa 4 - Treinamento dos Modelos
+
+Agora, será realizado o treinamento dos modelos. O objetivo dessa etapa é ensinar o algoritmo a reconhecer padrões nos dados que são fornecidos, e determinar se uma reserva será, ou não, cancelada de acordo com os dados das outras variáveis na base.
+
+Para visualizar a eficácia dos modelos, foi aplicado um **PCA (Principal Component Analysis)** para definir as melhores variáveis a serem visualizadas. Além disso, foram feitas matrizes de confusão dos dois modelos.
+
+#### Resultado dos treinamentos
+
+*Modelo 1:*
+
+=== "KNN - Modelo 1"
+
+    ```python exec="on"
+    --8<-- "docs/knn/training_p-s.py"
+    ```
+
+=== "Código"
+
+    ```python exec="0"
+    --8<-- "docs/knn/training_p-s.py"
+    ```
+
+*Modelo 2:*
+
+=== "KNN - Modelo 2"
+
+    ```python exec="on"
+    --8<-- "docs/knn/training_s-p.py"
+    ```
+
+=== "Código"
+
+    ```python exec="0"
+    --8<-- "docs/knn/training_s-p.py"
+    ```
+
+#### Matrizes de confusão
+
+### Etapa 5 - Avaliação dos modelos
 
 
 
