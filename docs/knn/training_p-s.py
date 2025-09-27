@@ -17,11 +17,11 @@ df = pd.read_csv("docs/knn/booking.csv")
 
 df = df.drop(columns=["Booking_ID", "date of reservation"])
 
-numeric_cols = ['number of adults', 'number of children', 'number of weekend nights', 
-                'number of week nights', 'lead time', 'P-C', 'P-not-C', 
-                'average price', 'special requests']
+numeric_cols = ["number of adults", "number of children", "number of weekend nights", 
+                "number of week nights", "lead time", "P-C", "P-not-C", 
+                "average price", "special requests"]
 
-categorical_cols = ['type of meal', 'room type', 'market segment type']
+categorical_cols = ["type of meal", "room type", "market segment type"]
 
 X = df.drop("booking status", axis=1)
 y = df["booking status"]

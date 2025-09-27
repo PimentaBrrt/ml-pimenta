@@ -340,7 +340,7 @@ Considerando a forma como a técnica do KNN funciona, calculando a distância eu
 from sklearn.preprocessing import OneHotEncoder
 
 encoder = OneHotEncoder()
-categorical_cols = ['type of meal', 'room type', 'market segment type']
+categorical_cols = ["type of meal", "room type", "market segment type"]
 
 X = df.drop("booking status", axis=1)
 
@@ -357,13 +357,13 @@ X = pd.concat([X.drop(columns=categorical_cols), encoded_df], axis=1)
 
 from sklearn.preprocessing import OneHotEncoder
 
-categorical_cols = ['type of meal', 'room type', 'market segment type']
+categorical_cols = ["type of meal", "room type", "market segment type"]
 
 X = df.drop("booking status", axis=1)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-encoder = OneHotEncoder(drop='first', sparse_output=False)
+encoder = OneHotEncoder(drop="first", sparse_output=False)
 encoder.fit(X_train[categorical_cols])
 
 X_train_encoded = encoder.transform(X_train[categorical_cols])
@@ -383,9 +383,9 @@ Para a padronização, utilizaremos o *StandardScaler()* do `scikit-learn`.
 from sklearn.preprocessing import OneHotEncoder
 
 scaler = StandardScaler()
-numeric_cols = ['number of adults', 'number of children', 'number of weekend nights', 
-                'number of week nights', 'lead time', 'P-C', 'P-not-C', 
-                'average price', 'special requests']
+numeric_cols = ["number of adults", "number of children", "number of weekend nights", 
+                "number of week nights", "lead time", "P-C", "P-not-C", 
+                "average price", "special requests"]
 
 X = df.drop("booking status", axis=1)
 
@@ -400,9 +400,9 @@ for col in numeric_cols:
 
 from sklearn.preprocessing import StandardScaler
 
-numeric_cols = ['number of adults', 'number of children', 'number of weekend nights', 
-                'number of week nights', 'lead time', 'P-C', 'P-not-C', 
-                'average price', 'special requests']
+numeric_cols = ["number of adults", "number of children", "number of weekend nights", 
+                "number of week nights", "lead time", "P-C", "P-not-C", 
+                "average price", "special requests"]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y)
 
