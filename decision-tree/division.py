@@ -11,14 +11,14 @@ features = [
 
 target = "relevance_category"
 
-x = df[features]
+X = df[features]
 y = df[target]
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
-print(f"Treino: {x_train.shape[0]} amostras\n")
-print(f"Teste: {x_test.shape[0]} amostras\n")
-print(f"Proporção: {x_train.shape[0]/x.shape[0]*100:.1f}% treino, {x_test.shape[0]/x.shape[0]*100:.1f}% teste\n")
+print(f"Treino: {X_train.shape[0]} amostras\n")
+print(f"Teste: {X_test.shape[0]} amostras\n")
+print(f"Proporção: {X_train.shape[0]/X.shape[0]*100:.1f}% treino, {X_test.shape[0]/X.shape[0]*100:.1f}% teste\n")
 
 print("Distribuição das classes - \n")
 print("Treino:\n")

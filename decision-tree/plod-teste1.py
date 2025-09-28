@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("docs\decision-tree\dados.csv", sep=",", encoding="UTF-8")
+df = pd.read_csv("docs/decision-tree/dados.csv", sep=",", encoding="UTF-8")
 
 print(f"Tipo de dado: {df["plod"].dtype}\n")
 print(f"Valor mínimo: {df["plod"].min()}\n")

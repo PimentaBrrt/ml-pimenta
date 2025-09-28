@@ -15,15 +15,15 @@ features = [
 
 target = "relevance_category"
 
-x = df[features]
+X = df[features]
 y = df[target]
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
 
 classifier = tree.DecisionTreeClassifier(random_state=42)
-classifier.fit(x_train, y_train)
+classifier.fit(X_train, y_train)
 
-y_pred = classifier.predict(x_test)
+y_pred = classifier.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Precisão do Modelo: {accuracy:.4f}")
 
