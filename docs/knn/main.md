@@ -373,7 +373,7 @@ X_test_encoded = encoder.transform(X_test[categorical_cols])
 
 #### 4° Passo: Padronização das features numéricas 
 
-Por fim, é necessária a padronização das features numéricas na base. Ao invés da normalização, será utilizada a técnica de padronização devido aos outliers nas features numéricas, principalmente as variáveis `lead time` e `average price`, que desbalanceariam o cálculo de distâncias se apenas normalizadas.
+Em seguida, é necessária a padronização das features numéricas na base. Ao invés da normalização, será utilizada a técnica de padronização devido aos outliers nas features numéricas, principalmente as variáveis `lead time` e `average price`, que desbalanceariam o cálculo de distâncias se apenas normalizadas.
 Para a padronização, utilizaremos o *StandardScaler()* do `scikit-learn`.
 
 *Modelo 1:*
@@ -412,6 +412,21 @@ X_test_scaled = scaler.transform(X_test)
 
 ```
 
+#### 5° Passo: Codificação da variável alvo
+
+Por fim, vamos codificar a variável alvo `booking status` utilizando a técnica de label encoding. Ou seja, após esse passo, "Not_Canceled" vai assumir o valor 1 e "Canceled" o valor 0. Aqui, essa técnica pode ser utilizada, pois essa é a variável alvo, e não será utilizada no cálculo das distâncias. Para codificar, utilizaremos o *LabelEncoder()* do `scikit-learn`.
+
+*Modelo 1 e 2:*
+
+``` python exec="0"
+
+from sklearn.preprocessing import LabelEncoder
+
+l_encoder = LabelEncoder()
+y = l_encoder.fit_transform(df["booking status"])
+
+```
+
 #### Divisão dos dados
 
 Como explicado anteriormente, essa etapa será realizada em momentos distintos dependendo do modelo utilizado. No primeiro modelo, esta etapa vem depois de todo o pré-processamento. No segundo modelo, esta etapa vem antes do pré-processamento.
@@ -442,7 +457,7 @@ Para realizar a divisão, foi utilizada a função *train_test_split()* do `scik
 
 Esta divisão adequada é de extrema importância, pois ajuda a evitar *overfitting*.
 
-### Etapa 4 - Treinamento dos Modelos
+### Etapa 3 - Treinamento dos Modelos
 
 Agora, será realizado o treinamento dos modelos. O objetivo dessa etapa é ensinar o algoritmo a reconhecer padrões nos dados que são fornecidos, e determinar se uma reserva será, ou não, cancelada de acordo com os dados das outras variáveis na base.
 
@@ -454,9 +469,10 @@ Para visualizar a eficácia dos modelos, foi aplicado um **PCA (Principal Compon
 
 === "KNN - Modelo 1"
 
-    ```python exec="on"
-    --8<-- "docs/knn/training_p-s.py"
-    ```
+    <figure markdown="span">
+        ![KNN modelo 1](../images/knn_modelo1.svg)
+        <figcaption>Acurácia: 0.8541</figcaption>
+    </figure>
 
 === "Código"
 
@@ -468,9 +484,10 @@ Para visualizar a eficácia dos modelos, foi aplicado um **PCA (Principal Compon
 
 === "KNN - Modelo 2"
 
-    ```python exec="on"
-    --8<-- "docs/knn/training_s-p.py"
-    ```
+    <figure markdown="span">
+        ![KNN modelo 2](../images/knn_modelo2.svg)
+        <figcaption>Acurácia: 0.8521</figcaption>
+    </figure>
 
 === "Código"
 
@@ -478,12 +495,142 @@ Para visualizar a eficácia dos modelos, foi aplicado um **PCA (Principal Compon
     --8<-- "docs/knn/training_s-p.py"
     ```
 
+### Etapa 4 - Avaliação dos modelos
+
 #### Matrizes de confusão
 
-### Etapa 5 - Avaliação dos modelos
+Primeiramente, vamos observar as matrizes de confusão de ambos os modelos. A matriz de confusão consegue nos oferecer diversas métricas de qualidade do modelo, como o número de previsões correta para positivos e negativos, os falso positivos, falso negativos, a precisão, especificidade, dentre outras métricas.
 
+*Modelo 1:*
 
+=== "Matriz de confusão - Modelo 1"
 
-### Etapa 6 - Relatório Final
+    ![CM KNN modelo 1](../images/cm_knn_modelo1.svg)
 
+=== "Código"
 
+    ```python exec="0"
+    --8<-- "docs/knn/confusion_p-s.py"
+    ```
+
+*Modelo 2:*
+
+=== "Matriz de confusão - Modelo 2"
+
+    ![CM KNN modelo 2](../images/cm_knn_modelo2.svg)
+
+=== "Código"
+
+    ```python exec="0"
+    --8<-- "docs/knn/confusion_s-p.py"
+    ```
+
+#### Acurácia dos modelos
+
+Os modelos tiveram uma acurácia muito próxima, ambas decentes, de 85,41% para o modelo 1 e 85,21% para o modelo 2.
+
+#### Métricas de qualidade
+
+*Modelo 1:*
+
+- Precisão (Canceled): 1802 / (1802 + 600) = 75.03%
+
+- Recall (Canceled): 1802 / (1802 + 459) = 79.70%
+
+- F1-Score (Canceled): 77.30%
+
+*Modelo 2:*
+
+- Precisão (Canceled): 1788 / (1788 + 614) = 74.44%
+
+- Recall (Canceled): 1788 / (1788 + 459) = 79.57%
+
+- F1-Score (Canceled): 76.92%
+
+#### Análise das visualizações
+
+*Modelo 1:*
+
+- Padrão visual: Separação mais "limpa" entre classes
+
+- Componentes principais: Distribuição mais organizada
+
+*Modelo 2:*
+
+- Padrão visual: Separação mais realista entre classes
+
+- Componentes principais: Sobreposição natural entre clusters
+
+#### Avaliação detalhada entre os modelos
+
+##### Modelo 1
+
+*Pontos Fortes:*
+
+- Acurácia ligeiramente superior (86.04% vs 85.80%)
+
+- Melhor precision para classe "Canceled" (75.03% vs 74.44%)
+
+- Separação visual mais clara no espaço PCA
+
+*Pontos Fracos:*
+
+- Performance artificialmente inflada
+
+- Baixa confiabilidade para dados novos
+
+- Não representa cenários do mundo real
+
+##### Modelo 2
+
+*Pontos Fortes:*
+
+- Performance realista e confiável
+
+- Melhor generalização para dados não vistos
+
+- Aplicável em ambiente de produção
+
+*Pontos Fracos:*
+
+- Performance ligeiramente inferior em números absolutos
+
+- Separação menos clara no espaço PCA
+
+### Etapa 5 - Relatório Final
+
+#### Recomendações e Conclusões
+
+É recomendado o Modelo 2 (sem data leakage) porque:
+
+- Fornece estimativas realistas de performance
+
+- É mais robusto para dados novos
+
+- Evita surpresas desagradáveis em produção
+
+- Mantém performance muito similar (diferença de apenas 0.2%)
+
+#### Pontos Importantes Observados
+
+- Data leakage cria uma falsa sensação de segurança
+
+- Diferenças pequenas em métricas podem indicar problemas grandes
+
+- A validação rigorosa é essencial para modelos confiáveis
+
+- Performance visual nem sempre se traduz em performance real
+
+#### Possíveis próximos passos e melhorias
+
+- Validar ambos modelos em um conjunto de dados totalmente novo
+
+- Implementar o Modelo 2 em ambiente controlado
+
+- Monitorar performance contínua em produção
+
+- Considerar técnicas de regularização para melhorar generalização
+
+#### Conclusão Final
+
+Embora o Modelo 1 apresente métricas ligeiramente superiores, o Modelo 2 é significativamente mais confiável e adequado para implantação em ambiente real devido à ausência de data leakage.

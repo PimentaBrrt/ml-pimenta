@@ -7,11 +7,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import accuracy_score
 from sklearn.decomposition import PCA
 
 encoder = OneHotEncoder()
 scaler = StandardScaler()
+l_encoder = LabelEncoder()
 
 df = pd.read_csv("docs/knn/booking.csv")
 
@@ -24,7 +26,7 @@ numeric_cols = ["number of adults", "number of children", "number of weekend nig
 categorical_cols = ["type of meal", "room type", "market segment type"]
 
 X = df.drop("booking status", axis=1)
-y = df["booking status"]
+y = l_encoder.fit_transform(df["booking status"])
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -52,6 +54,32 @@ X_train_pca = pca.fit_transform(X_train_final)
 X_test_pca = pca.transform(X_test_final)
 print("Variance explained by each component:", pca.explained_variance_ratio_)
 
-# buffer = StringIO()
-# plt.savefig(buffer, format="svg", transparent=True)
-# print(buffer.getvalue())
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train_pca, y_train)
+predictions = knn.predict(X_test_pca)
+
+plt.figure(figsize=(12, 8))
+
+h = 0.05
+x_min, x_max = X_train_pca[:, 0].min() - 1, X_train_pca[:, 0].max() + 1
+y_min, y_max = X_train_pca[:, 1].min() - 1, X_train_pca[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                     np.arange(y_min, y_max, h))
+
+Z = knn.predict(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
+
+plt.contourf(xx, yy, Z, cmap=plt.cm.RdYlBu, alpha=0.3)
+
+sns.scatterplot(x=X_train_pca[:, 0], y=X_train_pca[:, 1], hue=y_train,
+                palette="deep", edgecolor="k", s=80)
+sns.scatterplot(x=X_test_pca[:, 0], y=X_test_pca[:, 1], hue=y_test,
+                palette="deep", edgecolor="k", marker="X", s=120)
+
+plt.xlabel("Componente Principal 1")
+plt.ylabel("Componente Principal 2")
+plt.title("KNN com PCA do Modelo 2")
+plt.legend()
+
+plt.savefig("docs/images/knn_modelo2.svg", format="svg", transparent=True)
+plt.close()

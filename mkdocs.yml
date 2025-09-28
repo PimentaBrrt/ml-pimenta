@@ -3,6 +3,8 @@ site_author: Luiz Felipe Pimenta Berrettini
 site_url: https://pimentabrrt.github.io/ml-pimenta
 repo_url: https://github.com/PimentaBrrt/ml-pimenta
 repo_name: pimentabrrt/ml-pimenta
+docs_dir: docs
+site_dir: site
 
 theme:
   name: material
@@ -49,7 +51,7 @@ theme:
     - navigation.tracking
     - navigation.expand
   icon:
-    # logo: assets/images/devops
+    # logo: images/devops
     admonition:
       note: fontawesome/solid/note-sticky
       abstract: fontawesome/solid/book
@@ -63,7 +65,7 @@ theme:
       bug: fontawesome/solid/robot
       example: fontawesome/solid/flask
       quote: fontawesome/solid/quote-left
-  logo: assets/images/logo.svg
+  logo: images/logo.svg
 
 markdown_extensions:
   - admonition
