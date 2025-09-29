@@ -48,3 +48,4 @@ tree.plot_tree(
 buffer = StringIO()
 plt.savefig(buffer, format="svg")
 print(buffer.getvalue())
+plt.close()

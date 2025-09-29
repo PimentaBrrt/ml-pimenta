@@ -20,3 +20,4 @@ for p in ax.patches:
 buffer = StringIO()
 plt.savefig(buffer, format="svg", transparent=False)
 print(buffer.getvalue())
+plt.close()

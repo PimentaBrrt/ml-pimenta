@@ -1,15 +1,11 @@
 # Modelo de Machine Learning - K-Means
 
 Para esse projeto, foi utilizado um dataset obtido no [**Kaggle**](https://kaggle.com){:target='_blank'}.
-Os dados usados podem ser baixados [**aqui**](https://www.kaggle.com/datasets/youssefaboelwafa/hotel-booking-cancellation-prediction/data){:target='_blank'}.
-
-A mesma base de dados utilizada para o projeto de KNN está sendo utilizada aqui. Contudo, esse projeto utilizará apenas a lógica do *Modelo 2* estudada no projeto anterior. Ou seja, evitaremos **data leakage** e será aplicado o pré-processamento apenas no conjunto de treino. Mais um ponto importante de esclarecer é que, como a base de dados segue sendo a mesma, a exploração de dados, pré-processamento e divisão de dados serão basicamente a mesma coisa, mas agora, apenas com a lógica do *Modelo 2*.
+Os dados usados podem ser baixados [**aqui**](https://www.kaggle.com/datasets/taweilo/fish-species-sampling-weight-and-height-data){:target='_blank'}.
 
 ## Objetivo
 
-O dataset utilizado possui informações sobre reservas em um hotel, e foi criado justamente para a criação de modelos de machine learning com o objetivo de prever se um agendamento será, ou não, cancelado.
-
-Os dados originais para a criação desse dataset foram obtidos em um artigo de dados, no site [**Science Direct**](https://www.sciencedirect.com/){:target='_blank'}. O [**artigo em questão**](https://www.sciencedirect.com/science/article/pii/S2352340918315191) foi escrito por *Nuno Antonio*, *Ana de Almeida* e *Luis Nunes*, e contém uma quantidade maior de dados do que a sua versão derivada do **Kaggle**, que estou utilizando para este projeto.
+O dataset utilizado possui dados sintéticamente gerados sobre peixes inspirados no papel [**Length-weight relationships of nine ﬁsh species from the Tetulia River, southern Bangladesh**](https://www.researchgate.net/figure/Descriptive-statistics-and-estimated-length-weight-relationship-W-aL-b-W-in-g-and-L_tbl1_280916140){:target='_blank'}.
 
 ## Workflow
 
@@ -17,273 +13,108 @@ Os pontos *"etapas"* são o passo-a-passo da realização do projeto.
 
 ### Etapa 1 - Exploração de Dados
 
-Primeiramente, deve ser feita a exploração dos dados da base, com o objetivo de compreender a forma como são estruturados os dados, sua natureza e possível significância para o modelo de predição.
+Primeiramente, deve ser feita a exploração dos dados da base, com o objetivo de compreender a forma como são estruturados os dados e sua natureza.
 
-O dataset é composto por **36285 linhas** e **17 colunas**, com cada linha representando uma reserva distinta. Essa verificação pôde ser feita com as linhas de código abaixo;
+O dataset é composto por **4080 linhas** e **4 colunas**, com cada linha representando uma peixe diferente. Essa verificação pôde ser feita com as linhas de código abaixo;
 
 === "Saída"
 
     ```python exec="1"
-    --8<-- "docs/knn/exploring-knn.py"
+    --8<-- "docs/k-means/exploring-kmeans.py"
     ```
 
 === "Código"
 
     ```python exec="0"
-    --8<-- "docs/knn/exploring-knn.py"
+    --8<-- "docs/k-means/exploring-kmeans.py"
     ```
 
 #### Colunas do dataset
 
 | Coluna | Tipo | Descrição |
 |--------|------|-----------|
-| Booking_ID | String | Identificador único da reserva |
-| number of adults | Inteiro | Número de adultos presentes na reserva |
-| number of children | Inteiro | Número de crianças presentes na reserva |
-| number of weekend nights | Inteiro | Quantidade de noites em finais de semana reservadas |
-| number of week nights | Inteiro | Quantidade de noites em dias de semana reservadas |
-| type of meal | String | Plano de alimentação escolhido pelo cliente |
-| car parking space | Inteiro | Variável binária que indica se um estacionamento de carro foi pedido ou incluso na reserva |
-| room type | String | Tipo de quarto reservado |
-| lead time | Inteiro | Número de dias entre a data da reserva e a data de chegada do cliente |
-| market segment type | String | Tipo de segmento do mercado associado à reserva |
-| repeated | Inteiro | Variável binária que indica se a reserva é, ou não, repetida |
-| P-C | Inteiro | Número de reservas anteriores que foram canceladas pelo cliente antes do agendamento atual |
-| P-not-C | Inteiro | Número de reservas anteriores que não foram canceladas pelo cliente antes do agendamento atual |
-| average price | Float | Preço médio associado à reserva |
-| special requests | Inteiro | Número de pedidos especiais feitos pelo convidado(a) |
-| date of reservation | String | Data da reserva |
-| booking status | String | Status da reserva (cancelada ou não cancelada) |
+| species | String | Nome da espécie do peixe |
+| length | Float | Comprimento do peixe em centímetros (cm) |
+| weight | Float | Peso do peixe em gramas (g) |
+| w_l_ratio | Float | Razão entre peso e comprimento (weight / length) |
 
 #### Visualizações das variáveis
 
 Em seguida, é essencial realizar gráficos para visualizar como cada uma das variáveis se comportam, com o objetivo de entender melhor a base da dados.
 
-Está seção será divida para cada tipo de variável, entre variáveis quantitativas discretas, quantitativas contínuas, qualitativas categóricas, binárias e, por fim, a variável alvo.
-
-##### Variáveis Quantitativas Discretas
-
-=== "number of adults"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/number_adults.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/number_adults.py"
-        ```
-
-=== "number of children"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/number_children.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/number_children.py"
-        ```
-
-=== "number of weekend nights"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/weekend_nights.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/weekend_nights.py"
-        ```
-
-=== "number of week nights"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/week_nights.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/week_nights.py"
-        ```
-
-=== "lead time"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/lead_time.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/lead_time.py"
-        ```
-
-=== "P-C"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/p_c.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/p_c.py"
-        ```
-
-=== "P-not-C"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/p_not_c.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/p_not_c.py"
-        ```
-
-=== "special requests"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/special_requests.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/special_requests.py"
-        ```
-
-##### Variável Quantitativa Contínua **`average price`**
+##### Variável `species` - Categórica
 
 === "Gráfico"
 
     ``` python exec="1" html="1"
-    --8<-- "docs/knn/visualizations/average_price.py"
+    --8<-- "docs/k-means/visualizations/species.py"
     ```
 
 === "Código"
 
     ``` python exec="0"
-    --8<-- "docs/knn/visualizations/average_price.py"
+    --8<-- "docs/k-means/visualizations/species.py"
     ```
 
-##### Variáveis Categóricas
+É possível observar que há 9 espécies de peixe distintas, com uma distribuição muito semelhante entre elas. Com isso, podemos criar a hipótese de que essa base é fortemente compatível com clusterização de dados.
 
-=== "type of meal"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/type_meal.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/type_meal.py"
-        ```
-
-=== "room type"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/type_room.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/type_room.py"
-        ```
-
-=== "market segment type"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/type_market.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/type_market.py"
-        ```
-
-##### Variáveis Binárias
-
-=== "car parking space"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/car_parking.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/car_parking.py"
-        ```
-
-=== "repeated"
-
-    === "Gráfico"
-
-        ``` python exec="1" html="1"
-        --8<-- "docs/knn/visualizations/repeated.py"
-        ```
-
-    === "Código"
-
-        ``` python exec="0"
-        --8<-- "docs/knn/visualizations/repeated.py"
-        ```
-
-##### Variável Alvo **`booking status`**
+##### Variável `length` - Quantitativa Contínua
 
 === "Gráfico"
 
     ``` python exec="1" html="1"
-    --8<-- "docs/knn/visualizations/booking_status.py"
+    --8<-- "docs/k-means/visualizations/length.py"
     ```
 
 === "Código"
 
     ``` python exec="0"
-    --8<-- "docs/knn/visualizations/booking_status.py"
+    --8<-- "docs/k-means/visualizations/length.py"
     ```
 
-Através das análises, foi possível alcançar uma compreensão mais aprofundada do funcionamento de cada uma das variáveis no dataset, além de haver insights valiosos nesses gráficos. Esses dados serão essenciais para a escolha das variáveis que serão utilizadas no modelo.
+##### Variável `weight` - Quantitativa Contínua
 
-### Etapa 2 - Pré-processamento e Divisão de Dados
+=== "Gráfico"
 
-Nesta etapa, vamos fazer a divisão e pré-processamento dos dados. Como citado na introdução, estaremos aplicando apenas o modelo em que o pré-processamento é realizado a partir do conjunto de treino e depois aplicado no conjunto de teste. Com isso, estamos evitando **data leakage**.
+    ``` python exec="1" html="1"
+    --8<-- "docs/k-means/visualizations/weight.py"
+    ```
 
-#### 1° Passo: Identificação e tratamento de valores nulos
+=== "Código"
+
+    ``` python exec="0"
+    --8<-- "docs/k-means/visualizations/weight.py"
+    ```
+
+##### Variável `w_l_ratio` - Quantitativa Contínua
+
+=== "Gráfico"
+
+    ``` python exec="1" html="1"
+    --8<-- "docs/k-means/visualizations/w_l.py"
+    ```
+
+=== "Código"
+
+    ``` python exec="0"
+    --8<-- "docs/k-means/visualizations/w_l.py"
+    ```
+
+Com todas as análises realizadas, é possível entender os dados, suas frequências e distribuições. Com isso, podemos partir para o próximo passo.
+
+### Etapa 2 - Pré-processamento
+
+Nesta etapa, vamos fazer o pré-processamento dos dados. Para o K-Means, por ser um modelo não supervisionado de machine learning, não há necessidade de realizar a divisão de dados. Portanto, vamos aplicar o pré-processamento em toda a base.
+
+#### 1° Passo: Remoção da coluna `species`
+
+A coluna `species` da base já possui a divisão de cada um dos peixes por espécie. Portanto, vamos remover essa coluna e realizar a clusterização com os outros dados.
+
+``` python
+df = df.drop(columns=["species"])
+```
+
+#### 2° Passo: Identificação e tratamento de valores nulos
 
 O primeiro passo para o pré-processamento é identificar e tratar valores nulos na base.
 
@@ -293,128 +124,101 @@ print(df.isna().sum())
 
 Executando a linha de código acima para o dataframe contendo os dados da base, foi possível identificar que não há valores nulos na base.
 
-#### 2° Passo: Remoção de colunas desimportantes
+#### 3° Passo: Padronização dos dados
 
-Em seguida, colunas que não são importantes para a predição serão removidas do dataframe. Essas colunas são `Booking_ID` e `date of reservation`. A forma que essa exclusão foi feita está representada abaixo:
-
-``` python
-df = df.drop(columns=["Booking_ID", "date of reservation"])
-```
-
-#### 3° Passo: Codificação de variáveis categóricas
-
-O terceiro passo se consiste na codificação das variáveis categóricas. Essas são: `type of meal`, `room type` e `market segment type`.
-Considerando a forma como a técnica do KNN funciona, calculando a distância euclidiana entre pontos para predizer, a técnica de label encoding seria ruim, pois os valores numéricos arbitrários poderiam criar distâncias falsas entre as categorias. Por isso, utilizaremos a técnica de One-Hot Encoding para codificar essas variáveis, utilizando o *OneHotEncoder()* do `scikit-learn`.
-
-``` python exec="0"
-
-from sklearn.preprocessing import OneHotEncoder
-
-categorical_cols = ["type of meal", "room type", "market segment type"]
-
-X = df.drop("booking status", axis=1)
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-encoder = OneHotEncoder(drop="first", sparse_output=False)
-encoder.fit(X_train[categorical_cols])
-
-X_train_encoded = encoder.transform(X_train[categorical_cols])
-X_test_encoded = encoder.transform(X_test[categorical_cols])
-
-```
-
-#### 4° Passo: Padronização das features numéricas 
-
-Em seguida, é necessária a padronização das features numéricas na base. Ao invés da normalização, será utilizada a técnica de padronização devido aos outliers nas features numéricas, principalmente as variáveis `lead time` e `average price`, que desbalanceariam o cálculo de distâncias se apenas normalizadas.
+Em seguida, é necessária a padronização das features numéricas na base. Ao invés da normalização, será utilizada a técnica de padronização devido aos outliers nas features numéricas, principalmente as variáveis `weight` e `w_l_ratio`.
 Para a padronização, utilizaremos o *StandardScaler()* do `scikit-learn`.
 
 ``` python exec="0"
 
 from sklearn.preprocessing import StandardScaler
 
-numeric_cols = ["number of adults", "number of children", "number of weekend nights", 
-                "number of week nights", "lead time", "P-C", "P-not-C", 
-                "average price", "special requests"]
+scaler = StandardScaler()
 
-X_train, X_test, y_train, y_test = train_test_split(X, y)
+df = df.drop(columns=["species"])
 
-scaler.fit(X_train)
-X_train_scaled = scaler.transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+for col in df:
+    df[col] = scaler.fit_transform(df[[col]])
 
 ```
 
-#### 5° Passo: Codificação da variável alvo
+Como todas as features restantes após a remoção de `species` são numéricas contínuas, podemos simplesmente aplicar a padronização na base inteira de uma vez.
 
-Por fim, vamos codificar a variável alvo `booking status` utilizando a técnica de label encoding. Ou seja, após esse passo, "Not_Canceled" vai assumir o valor 1 e "Canceled" o valor 0. Aqui, essa técnica pode ser utilizada, pois essa é a variável alvo, e não será utilizada no cálculo das distâncias. Para codificar, utilizaremos o *LabelEncoder()* do `scikit-learn`.
+### Etapa 3 - Treinamento do Modelo
 
-``` python exec="0"
+Agora, será realizado o treinamento do modelo. O objetivo dessa etapa é clusterizar os dados e inserir os peixes em seus grupos a partir da técnica de K-Means.
 
-from sklearn.preprocessing import LabelEncoder
+#### Elbow Method
 
-l_encoder = LabelEncoder()
-y = l_encoder.fit_transform(df["booking status"])
+Antes de treinar o modelo, é necessário descobrir o número de clusters que será utilizado. Para isso, aplicaremos o Elbow Method.
 
-```
+=== "Elbow"
 
-#### Divisão dos dados
-
-Essa etapa será realizada antes do pré-processamento, e apenas o conjunto de treino resultante desta divisão será base para o pré-processamento.
-
-- **Conjunto de Treino:** Utilizado para ensinar o modelo a reconhecer padrões
-
-- **Conjunto de Teste:** Utilizado para avaliar o desempenho do modelo com dados ainda não vistos
-
-Para realizar a divisão, foi utilizada a função *train_test_split()* do `scikit-learn`. Os parâmetros utilizados são:
-
-- **test_size=0.2:** Define que 20% dos dados serão utilizados para teste, enquanto o restante será usado para treino.
-
-- **random_state=42:** Parâmetro que controla o gerador de número aleatórios utilizado para sortear os dados antes de separá-los. Garante reprodutibilidade.
-
-- **stratify=y:** Esse atributo definido como *y* é essencial devido à natureza da coluna `booking status`. Com essa definição, será mantida a mesma proporção das categorias em ambos os conjuntos, reduzindo o viés.
-
-=== "Saída"
-
-    ```python exec="1"
-    --8<-- "docs/knn/division.py"
-    ```
+    ![Elbow Method](../images/elbow.svg)
 
 === "Código"
 
-    ```python exec="0"
-    --8<-- "docs/knn/division.py"
+    ``` python exec="0"
+    --8<-- "docs/k-means/elbow.py"
     ```
 
-Esta divisão adequada é de extrema importância, pois ajuda a evitar *overfitting*.
+Podemos observar que, muito provavelmente, o cotovelo está em $k = 3$. Mesmo que saibamos que existem 9 espécies de peixes distintas na base, o Elbow Method nos mostra que os dados formam 3 grupos *naturais* baseados apenas nas medidas físicas, não nas espécies biológicas. Forçar um cluster para cada espécie, fazendo de $k = 9$, provavelmente resultará em *overfitting* e clusters ruins, já que as medidas podem não separar perfeitamente as 9 espécies.
 
-### Etapa 3 - Treinamento dos Modelos
-
-Agora, será realizado o treinamento do modelo. O objetivo dessa etapa é ensinar o algoritmo a reconhecer padrões nos dados que são fornecidos, e determinar se uma reserva será, ou não, cancelada de acordo com os dados das outras variáveis na base. A técnica utilizada, desta vez, será do K-Means, que se consiste na segregação dos dados em torno de centros, criando *clusters*.
-
-#### Resultado dos treinamentos
+#### Resultado do treinamento
 
 === "K-Means"
 
-    
+    <figure markdown="span">
+        ![K-Means](../images/k-means.svg)
+        <figcaption>Silhouette Score: 0.6284</figcaption>
+    </figure>
 
 === "Código"
 
-    
+    ``` python exec="0"
+    --8<-- "docs/k-means/training-kmeans.py"
+    ```
 
-### Etapa 4 - Avaliação dos modelos
+### Etapa 4 - Avaliação do modelo
 
-#### Matriz de confusão
+#### Silhouette Score
 
-Agora, vamos observar a matriz de confusão do modelo. A matriz de confusão consegue nos oferecer diversas métricas de qualidade do modelo, como o número de previsões correta para positivos e negativos, os falso positivos, falso negativos, a precisão, especificidade, dentre outras métricas.
+O modelo alcançou um Silhouette Score de **0.6284**, indicando uma estrutura de clusters bem definida e distinta. Na escala de -1 a +1, este valor se enquadra na categoria *Boa* a *Forte*, sugerindo que os clusters possuem alta coesão interna e boa separação entre si, com sobreposição mínima entre os grupos.
 
-=== "Matriz de confusão - Modelo 2"
+#### Variância Explicada
 
+O PCA aplicado para visualização explica **98.80%** da variância total dos dados, com o primeiro componente (PC1) capturando 58.68% e o segundo componente (PC2) 40.12%. Isso indica que a visualização 2D representa *fielmente* a estrutura multidimensional original dos dados de medidas dos peixes.
 
+#### Insights Importantes sobre o Modelo
 
-=== "Código"
+##### Padrão de Agrupamento Natural
 
+- O K-means identificou 3 grupos naturais baseados apenas nas medidas físicas, não nas espécies biológicas
 
+- Isso revela que diferentes espécies compartilham perfis dimensionais similares
+
+##### Relação com Espécies Reais
+
+A análise de correspondência mostra que:
+
+- Cada cluster contém múltiplas espécies
+
+- Espécies diferentes coexistem no mesmo cluster quando têm medidas similares
 
 ### Etapa 5 - Relatório Final
 
+O projeto de clustering foi bem-sucedido em identificar padrões naturais nas medidas físicas de peixes. O K-means com K=3 demonstrou ser a configuração ideal para estes dados.
+
+#### Possíveis Melhorias
+
+- Análise discriminante: Verificar se as espécies são linearmente separáveis
+
+- Matriz de confusão clusters×espécies: Quantificar a sobreposição entre agrupamentos
+
+- Análise de features: Identificar quais medidas mais contribuem para cada cluster
+
+#### Considerações Finais
+
+O modelo K-means demonstrou ser eficaz para identificar padrões de tamanho em peixes baseado em suas medidas físicas. A descoberta mais interessante foi que o agrupamento natural dos dados (3 clusters) não corresponde às 9 espécies biológicas, revelando que diferentes espécies podem ter perfis dimensionais similares.
+
+O Silhouette Score de 0.6284 confirma uma estrutura de clusters bem definida, com boa separação entre grupos e alta coesão interna.

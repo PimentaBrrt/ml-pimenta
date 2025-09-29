@@ -380,7 +380,7 @@ Para a padronização, utilizaremos o *StandardScaler()* do `scikit-learn`.
 
 ``` python exec="0"
 
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import StandardScaler
 
 scaler = StandardScaler()
 numeric_cols = ["number of adults", "number of children", "number of weekend nights", 

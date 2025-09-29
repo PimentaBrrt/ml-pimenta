@@ -12,8 +12,8 @@ Projetos de machine learning realizados em *2025.2*, orientados e supervisionado
 ## Entregas
 
 - [X] Decision Tree - Data 29/08/2025
-- [ ] KNN - Data 16/09/2025
-- [ ] K-means e Métricas de Avaliação - Data 19/09/2025
+- [X] KNN - Data 16/09/2025
+- [ ] K-means e Métricas de Avaliação - Data 28/09/2025
 
 ## Referências
 
