@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-df = pd.read_csv("dados_processado.csv")
+df = pd.read_csv("docs/decision-tree/dados_processado.csv")
 
 features = [
     "book_freq", "popularity", "survival_prob", "isNoble",
