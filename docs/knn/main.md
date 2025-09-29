@@ -529,24 +529,6 @@ Primeiramente, vamos observar as matrizes de confusão de ambos os modelos. A ma
 
 Os modelos tiveram uma acurácia muito próxima, ambas decentes, de 85,41% para o modelo 1 e 85,21% para o modelo 2.
 
-#### Métricas de qualidade
-
-*Modelo 1:*
-
-- Precisão (Canceled): 1802 / (1802 + 600) = 75.03%
-
-- Recall (Canceled): 1802 / (1802 + 459) = 79.70%
-
-- F1-Score (Canceled): 77.30%
-
-*Modelo 2:*
-
-- Precisão (Canceled): 1788 / (1788 + 614) = 74.44%
-
-- Recall (Canceled): 1788 / (1788 + 459) = 79.57%
-
-- F1-Score (Canceled): 76.92%
-
 #### Análise das visualizações
 
 *Modelo 1:*
@@ -569,7 +551,6 @@ Os modelos tiveram uma acurácia muito próxima, ambas decentes, de 85,41% para 
 
 - Acurácia ligeiramente superior (86.04% vs 85.80%)
 
-- Melhor precision para classe "Canceled" (75.03% vs 74.44%)
 
 - Separação visual mais clara no espaço PCA
 

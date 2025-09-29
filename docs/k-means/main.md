@@ -5,7 +5,7 @@ Os dados usados podem ser baixados [**aqui**](https://www.kaggle.com/datasets/ta
 
 ## Objetivo
 
-O dataset utilizado possui dados sintéticamente gerados sobre peixes inspirados no papel [**Length-weight relationships of nine ﬁsh species from the Tetulia River, southern Bangladesh**](https://www.researchgate.net/figure/Descriptive-statistics-and-estimated-length-weight-relationship-W-aL-b-W-in-g-and-L_tbl1_280916140){:target='_blank'}.
+O dataset utilizado possui dados sintéticamente gerados sobre peixes inspirados no papel [**Length-weight relationships of nine ﬁsh species from the Tetulia River, southern Bangladesh**](https://www.researchgate.net/figure/Descriptive-statistics-and-estimated-length-weight-relationship-W-aL-b-W-in-g-and-L_tbl1_280916140){:target='_blank'}. O objetivo do projeto é clusterizar esses peixes através, puramente, de suas características físicas.
 
 ## Workflow
 

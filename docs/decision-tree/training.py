@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from io import StringIO
 
-df = pd.read_csv("dados_processado.csv")
+df = pd.read_csv("docs/decision-tree/dados_processado.csv")
 
 features = [
     "book_freq", "popularity", "survival_prob", "isNoble",
