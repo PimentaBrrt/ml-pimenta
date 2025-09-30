@@ -137,8 +137,7 @@ scaler = StandardScaler()
 
 df = df.drop(columns=["species"])
 
-for col in df:
-    df[col] = scaler.fit_transform(df[[col]])
+X = scaler.fit_transform(df)
 
 ```
 
