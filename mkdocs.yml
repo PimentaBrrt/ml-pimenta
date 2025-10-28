@@ -140,4 +140,5 @@ nav:
     - Projeto 1 - Decision Tree: ./decision-tree/main.md
     - Projeto 2 - KNN: ./knn/main.md
     - Projeto 3 - K-Means: ./k-means/main.md
-    - Métricas e Avaliação - KNN e K-Means: ./metrics/main.md
+    - Projeto 4 - Métricas e Avaliação - KNN e K-Means: ./metrics/main.md
+    - Projeto 5 - Random Forest: ./random-forest/main.md
