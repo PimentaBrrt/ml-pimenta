@@ -122,19 +122,117 @@ Através das análises, foi possível alcançar uma compreensão mais aprofundad
 
 ### Etapa 2 - Pré-processamento
 
+Nessa etapa, vamos tratar a base para uso no treinamento do modelo.
 
+#### 1° Passo: Identificação e tratamento de valores nulos
+
+O primeiro passo para o pré-processamento é identificar e tratar valores nulos na base.
+
+``` python exec="0"
+print(df.isna().sum())
+```
+
+Executando a linha de código acima para o dataframe contendo os dados da base, foi possível identificar que não há valores nulos na base.
+
+#### 2° Passo: Codificação de variáveis categóricas
+
+O segundo passo se consiste na codificação das variáveis categóricas. Essas são: `Sex`, `BP` e `Cholesterol`.
+Utilizaremos a técnica de One-Hot Encoding para codificar essas variáveis, utilizando o *OneHotEncoder()* do `scikit-learn`.
+
+``` python exec="0"
+
+from sklearn.preprocessing import OneHotEncoder
+
+encoder = OneHotEncoder()
+categorical_cols = ["Sex", "BP", "Cholesterol"]
+
+X = df.drop("Drug", axis=1)
+
+X_encoded = encoder.fit_transform(X[categorical_cols])
+encoded_df = pd.DataFrame(X_encoded.toarray(), columns=encoder.get_feature_names_out(categorical_cols), index=X.index)
+
+X = pd.concat([X.drop(columns=categorical_cols), encoded_df], axis=1)
+
+```
+
+#### 3° Passo: Padronização das features numéricas
+
+Em seguida, é necessária a padronização das features numéricas na base. Utilizaremos o *StandardScaler()* do `scikit-learn` para padronizar as variáveis `Na_to_K` e `Age`.
+
+``` python exec="0"
+
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+numeric_cols = ["Age", "Na_to_K"]
+
+X = df.drop("Drug", axis=1)
+
+X_scaled = scaler.fit_transform(X[numeric_cols])
+scaled_df = pd.DataFrame(X_scaled, columns=numeric_cols, index=X.index)
+
+X = pd.concat([X.drop(columns=numeric_cols), scaled_df], axis=1)
+
+```
+
+#### 4° Passo: Codificação da variável alvo
+
+Por fim, vamos codificar a variável alvo `Drug` utilizando a técnica de label encoding. Para codificar, utilizaremos o *LabelEncoder()* do `scikit-learn`.
+
+``` python exec="0"
+
+from sklearn.preprocessing import LabelEncoder
+
+encoder = LabelEncoder()
+y = encoder.fit_transform(df["Drug"])
+
+```
 
 ### Etapa 3 - Divisão dos dados
 
+Em seguida, vamos realizar a divisão dos dados em conjuntos de *treino* e *teste*.
 
+- **Conjunto de Treino:** Utilizado para ensinar o modelo a reconhecer padrões
 
-### Etapa 4 - Treinamento dos Modelos
+- **Conjunto de Teste:** Utilizado para avaliar o desempenho do modelo com dados ainda não vistos
 
+Para realizar a divisão, foi utilizada a função *train_test_split()* do `scikit-learn`. Os parâmetros utilizados são:
 
+- **test_size=0.2:** Define que 20% dos dados serão utilizados para teste, enquanto o restante será usado para treino.
 
-#### Resultado do treinamento
+- **random_state=42:** Parâmetro que controla o gerador de número aleatórios utilizado para sortear os dados antes de separá-los. Garante reprodutibilidade.
 
+- **stratify=y:** Esse atributo definido como *y* é essencial devido à natureza da coluna `Drug`. Com essa definição, será mantida a mesma proporção das categorias em ambos os conjuntos, reduzindo o viés.
 
+=== "Saída"
+
+    ```python exec="1"
+    --8<-- "docs/random-forest/division.py"
+    ```
+
+=== "Código"
+
+    ```python exec="0"
+    --8<-- "docs/random-forest/division.py"
+    ```
+
+Esta divisão adequada é de extrema importância, pois ajuda a evitar *overfitting*.
+
+### Etapa 4 - Treinamento do Modelo
+
+Agora, será realizado o treinamento do modelo. O objetivo dessa etapa é ensinar o algoritmo a reconhecer padrões nos dados que são fornecidos, e prever o tipo de droga presente no sangue dos pacientes através das features do modelo.
+
+=== "Saída"
+
+    ```python exec="1" html="1"
+    --8<-- "docs/random-forest/training.py"
+    ```
+
+=== "Código"
+
+    ```python exec="0"
+    --8<-- "docs/random-forest/training.py"
+    ```
 
 ### Etapa 5 - Avaliação do modelo
 
