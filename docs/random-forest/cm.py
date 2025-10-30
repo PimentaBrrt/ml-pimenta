@@ -1,8 +1,10 @@
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report, confusion_matrix
 
 df = pd.read_csv("docs/random-forest/drug200.csv")
 
@@ -35,11 +37,19 @@ rf = RandomForestClassifier(n_estimators=100,
 rf.fit(X_train, y_train)
 
 predictions = rf.predict(X_test)
-print(f"Accuracy: {accuracy_score(y_test, predictions)}")
 
-feature_importance = pd.DataFrame({
-    "Feature": rf.feature_names_in_,
-    "Importância": rf.feature_importances_
-})
-print("<br>Importância das Features:")
-print(feature_importance.sort_values(by="Importância", ascending=False).to_html() + "<br>")
+cm = confusion_matrix(y_test, predictions)
+
+plt.figure(figsize=(6,4))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=l_encoder.classes_, yticklabels=l_encoder.classes_)
+plt.xlabel("Predito")
+plt.ylabel("Real")
+plt.title("Matriz de Confusão - Random Forest")
+
+# plt.savefig("docs/images/cm-rf.svg", format="svg", transparent=True)
+plt.close()
+
+report_dict = classification_report(y_test, predictions, output_dict=True)
+report_df = pd.DataFrame(report_dict).transpose()
+
+print(report_df.round(2).to_markdown())

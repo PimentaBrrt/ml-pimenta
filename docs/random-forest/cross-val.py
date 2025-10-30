@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
@@ -35,11 +35,9 @@ rf = RandomForestClassifier(n_estimators=100,
 rf.fit(X_train, y_train)
 
 predictions = rf.predict(X_test)
-print(f"Accuracy: {accuracy_score(y_test, predictions)}")
 
-feature_importance = pd.DataFrame({
-    "Feature": rf.feature_names_in_,
-    "Importância": rf.feature_importances_
-})
-print("<br>Importância das Features:")
-print(feature_importance.sort_values(by="Importância", ascending=False).to_html() + "<br>")
+cv_scores = cross_val_score(rf, X, y, cv=5, scoring='accuracy')
+print(f"Validação Cruzada (5 folds):")
+print(f"\nScores: {cv_scores}")
+print(f"\nMédia: {cv_scores.mean():.4f} (+/- {cv_scores.std() * 2:.4f})")
+print(f"\nDiferença para acurácia original: {accuracy_score(y_test, predictions) - cv_scores.mean():.4f}")

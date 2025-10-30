@@ -236,34 +236,87 @@ Agora, será realizado o treinamento do modelo. O objetivo dessa etapa é ensina
 
 ### Etapa 5 - Avaliação do modelo
 
-
-
-#### Matriz de confusão
-
-
+Nessa etapa, vamos avaliar os resultados obtidos pelo modelo **Random Forest**.
 
 #### Acurácia do modelo
 
+Como é possível observar acima na etapa de treinamento do modelo, o modelo atingiu uma alta acurácia, de **97,5%**, indicando que, possivelmente, o modelo sofre de *overfitting*. Ou seja, existe a chance do modelo estar apenas memorizando os dados ao invés de entendê-los, devido a um possível ruído dos dados de treino.
+Por isso, vamor realizar um teste de validação cruzada para testar se o modelo sofre desse problema.
 
+#### Teste de validação cruzada
 
-#### Análise da visualização
+=== "Saída"
 
+    ```python exec="1"
+    --8<-- "docs/random-forest/cross-val.py"
+    ```
 
+=== "Código"
+
+    ```python exec="0"
+    --8<-- "docs/random-forest/cross-val.py"
+    ```
+
+O modelo demonstra excelente generalização, com acurácia média de **98%** na *validação cruzada*, ligeiramente superior aos **97,5%** obtidos no *teste inicial*. A consistência entre os folds é **alta**, com quatro deles alcançando **100% de acurácia** e apenas um apresentando **90%**.
+
+A pequena variação (de aproximadamente 8%) entre os folds e a diferença insignificante de 0,5% entre a validação cruzada e o teste original indicam que não há evidências de *overfitting*. O modelo mostra **robustez** e **capacidade de generalização** adequada para os dados.
+
+#### Importância das features
+
+Agora, vamos analisar a importância das features do modelo.
+
+- As variáveis mais importantes para a predição foram `Na_to_K`, `BP_HIGH` e `Age`.
+
+- Foi possível observar que as variáveis dummy `Sex_M` e `Sex_F` possuem relevância muito mínima para a predição, de **1,32%** e **0,93%**, respectivamente.
+
+#### Matriz de confusão e Métricas de Qualidade
+
+Em seguida, vamos analisar a matriz de confusão e obter as métricas de avaliação:
+
+=== "Matriz de Confusão"
+
+    *Matriz de confusão*
+
+    ![CM-KNN](../images/cm-rf.svg)
+
+    *Métricas de qualidade*
+
+    ``` python exec="1"
+    --8<-- "docs/random-forest/cm.py"
+    ```
+
+=== "Código"
+
+    ``` python exec="0"
+    --8<-- "docs/random-forest/cm.py"
+    ```
+
+Como é possível observar acima, o modelo possui excelentes métricas de qualidade, já que das 40 amostras no conjunto de teste, apenas uma foi prevista incorretamente.
 
 ### Etapa 6 - Relatório Final
 
-
+Para finalizar o projeto, vamos ao relatório final do modelo:
 
 #### Recomendações e Conclusões
 
-
+O modelo **Random Forest** desenvolvido demonstra **excelente desempenho** e está pronto para uso em um *ambiente controlado*. Recomenda-se sua implementação para classificação de medicamentos com base nas características dos pacientes, considerando sua *alta acurácia* e *robustez* comprovadas.
 
 #### Pontos Importantes Observados
 
+- **Alta performance:** O modelo alcançou **97,5%** de acurácia no teste inicial e **98%** na validação cruzada
 
+- **Boa generalização:** A validação cruzada confirmou a ausência de *overfitting* significativo
 
-#### Possíveis próximos passos e melhorias
+- **Feature mais relevante:** A variável `Na_to_K` mostrou-se como a mais importante para predição
 
+#### Possíveis Próximos Passos e Melhorias
 
+- **Coleta de mais dados:** Expandir o dataset para aumentar a robustez do modelo
+
+- **Engenharia de features:** Explorar combinações entre variáveis existentes
+
+- **Validação externa:** Testar o modelo com dados de fontes diferentes
 
 #### Conclusão Final
+
+O projeto atingiu plenamente seu objetivo de desenvolver um *modelo preditivo eficaz* para classificação de medicamentos. O **Random Forest** mostrou-se como uma escolha adequada, entregando resultados consistentes e confiáveis. A abordagem metodológica adotada, desde a exploração inicial até a validação rigorosa, garantiu a qualidade do modelo final, que se apresenta como uma **solução viável** para o problema proposto.
